@@ -3,9 +3,27 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Главная страница</title>
+		<title>{{ title }}</title>
 	</head>
 	<body>
-		<h1>Главная страница</h1>
+		<ul>
+			<li><a href="{% url 'index' %}">Главная страница</a></li>
+			{% for m in menu %}
+			<li>
+				<a href="{% url m.url_name %}">{{ m.title }}</a>
+			</li>
+			{% endfor %}
+		</ul>
+		<h1>{{ title }}</h1>
+		<ul>
+			{% for p in posts %}
+			<li>
+				<h2>{{ p.title }}</h2>
+				<p>{{ p.content }}</p>
+				<p><a href="{% url 'post' p.id %}">Читать пост</a></p>
+				<hr />
+			</li>
+			{% endfor %}
+		</ul>
 	</body>
 </html>
