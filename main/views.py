@@ -1,5 +1,7 @@
 from django.http import HttpResponse, HttpResponseNotFound
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
+
+from .models import Women
 
 # Create your views here.
 menu = [
@@ -26,10 +28,11 @@ cats_db = [
 
 
 def index(request):
+    posts = Women.objects.filter(is_published=1)
     data = {
         "menu": menu,
         "title": "Главная страница",
-        "posts": data_db,
+        "posts": posts,
         "cat_selected": 0,
     }
     return render(request, 'main/index.html', context=data)
@@ -55,11 +58,13 @@ def login(request):
     return HttpResponse("Авторизация")
 
 
-def show_post(request, post_id):
+def show_post(request, post_slug):
+    post = get_object_or_404(Women, slug=post_slug)
     data = {
         "menu": menu,
-        "title": f"Пост №{post_id}",
-        "post_id": post_id,
+        "post": post,
+        "title": post.title,
+        "cat_selected": 0,
     }
     return render(request, 'main/post.html', context=data)
 
